@@ -25,6 +25,7 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -39,5 +40,17 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+
+    <!-- Login Form -->
+    <div class="container">
+      <form>
+        <h1>Login</h1>
+        <label for="username">Username</label>
+        <input type="text" placeholder="Enter Username" name="username" required>
+        <label for="password">Password</label>
+        <input type="password" placeholder="Enter Password" name="password" required>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   </body>
 </html>
