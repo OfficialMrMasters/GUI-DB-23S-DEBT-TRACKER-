@@ -58,15 +58,18 @@ function App() {
   }
   const checkUser = (event) =>{
     console.log("hi");
-    axios.post(url + '/checkuser', { username, password })
-    .then(response => {
-      const user = response.data;
-      setUsername(user.first_name);
+    axios.post(url + '/checkuser', { username, password }).then((res) => {
+      console.log("HELLO");
+      console.log(res.data.first_name);
+      alert(res.data);
+      //console.log(user);
+      const user = res.data;
+      setUsername(res.data.first_name);
       console.log('User found:', user);
-      welcomeMessageElement.innerText = "hello, " + user.first_name;
+      welcomeMessageElement.innerText = "hello, " + res.data.first_name;
     })
     .catch(error => {
-      console.error('Error checking user:', error);
+      console.error('Error checking users:', error);
       setError('Invalid username or password.');
     });
   }
@@ -86,7 +89,7 @@ function App() {
         <label htmlFor="password">Password</label>
         <input type="password" placeholder="Enter Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
         {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
+        <button type="submit" onClick={checkUser}>Login</button>
         
       </form>
       <h1>Hello, </h1>
