@@ -1,10 +1,11 @@
-import './App.css';
 import axios from 'axios';
 import { useState } from 'react';
+import Signup from './signup';
 function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState({});
   const url = 'http://localhost:8000'
 
   const checkAPI = () => {
@@ -15,12 +16,16 @@ function App() {
     })
   }
   const user = {
-    "first": "Hayden",
-    "last": "Center",
+    "user_id": 155,
+    "first_name": "Hayden",
+    "last_name": "Center",
     "age": 22,
-    "admin": true,
-    "user_pass": "123",
-    "user_login": "12345"
+    "admin": "1",
+    "username": "123",
+    "nickname": "none",
+    "phone_number": "9135553353",
+    "email": "joe@gmail.com",
+    "password": "12345"
   }
 
   const sendJSON = () => {
@@ -34,13 +39,14 @@ function App() {
   }
 
   const sendUser = () => {
+    
     axios.post(url + '/user', user).then((res) => {
       alert(res.data)
     }).catch((err) => {
       console.log(err)
     })
   }
-  let welcomeMessageElement = document.getElementById("welcome");
+  let welcomeMessageElement = document.getElementById("welcome-text");
   const getUsers = () => {
     axios.get(url + '/users').then((res) => {
       alert(JSON.stringify(res.data))
@@ -57,9 +63,8 @@ function App() {
     })
   }
   const checkUser = (event) =>{
-    console.log("hi");
+    event.preventDefault();
     axios.post(url + '/checkuser', { username, password }).then((res) => {
-      console.log("HELLO");
       console.log(res.data.first_name);
       alert(res.data);
       //console.log(user);
@@ -67,6 +72,7 @@ function App() {
       setUsername(res.data.first_name);
       console.log('User found:', user);
       welcomeMessageElement.innerText = "hello, " + res.data.first_name;
+      setUserData(res.data);
     })
     .catch(error => {
       console.error('Error checking users:', error);
@@ -92,8 +98,38 @@ function App() {
         <button type="submit" onClick={checkUser}>Login</button>
         
       </form>
-      <h1>Hello, </h1>
-      <div id="welcome">Hello</div>
+      <div id="welcome">
+        <h1 id="welcome-text">Hello</h1>
+        <table>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Password</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Age</th>
+              <th>Admin</th>
+              <th>Nickname</th>
+              <th>Phone Number</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{userData.username}</td>
+              <td>{userData.password}</td>
+              <td>{userData.first_name}</td>
+              <td>{userData.last_name}</td>
+              <td>{userData.age}</td>
+              <td>{userData.admin}</td>
+              <td>{userData.nickname}</td>
+              <td>{userData.phone_number}</td>
+              <td>{userData.email}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <Signup></Signup>
     </div>
   );
 }

@@ -30,8 +30,11 @@ app.put('/parse', (req, res) => {
     console.log(req.body)
     
     try {
-        const { first, last, age, admin, user_login, user_pass } = req.body
-        const name = `${first} ${last}`
+        const { 
+                user_id, username, first_name, last_name, age, admin, 
+                nickname, password, phone_number, email 
+                } = req.body
+        const name = `${first_name} ${last_name}`
         const isAdmin = admin ? "is an admin" : "is not an admin"
 
         res.status(200)
@@ -52,8 +55,11 @@ app.get('/db', (req, res) => {
 })
 
 app.post('/user', (req, res) => {
-    const { first, last, age, admin, user_login, user_pass } = req.body
-    const query = `INSERT INTO users (first_name, last_name, age, admin, user_login, user_pass) VALUES ('${first}', '${last}', ${age}, ${admin}, '${user_login}', '${user_pass}')`
+    const { 
+        user_id, username, first_name, last_name, age, admin, 
+        nickname, password, phone_number, email 
+        } = req.body
+    const query = `INSERT INTO users (user_id, username, first_name, last_name, age, admin, nickname, password, phone_number, email ) VALUES ('${user_id}','${username}','${first_name}', '${last_name}', ${age}, ${admin},'${nickname}', '${password}', '${phone_number}','${email}')`
     connection.query(query, (err, rows, fields) => {
         if (err) throw err
 
@@ -80,10 +86,24 @@ app.put('/users/clear', (req, res) => {
         res.send("Successfully cleared users!")
     })
 })
+app.post('/signup', (req, res) => {
+    const { 
+        user_id, username, first_name, last_name, age, admin, 
+        nickname, password, phone_number, email 
+        } = req.body
+    const query = `INSERT INTO users (user_id, username, first_name, last_name, age, admin, nickname, password, phone_number, email ) VALUES ('${user_id}','${username}','${first_name}', '${last_name}', ${age}, ${admin},'${nickname}', '${password}', '${phone_number}','${email}')`
+    connection.query(query, (err, rows, fields) => {
+        if (err) throw err
+
+        console.log(rows)
+        res.status(200)
+        res.send("Successfully added user!")
+    })
+})
 app.post('/checkuser', (req, res) => {
     console.log("!!!!!!!!!");
     const { username, password } = req.body;
-    connection.query('SELECT * FROM users WHERE user_login = ? AND user_pass = ?', [username, password], (err, results) => {
+    connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, results) => {
         console.log(response);
         if (results.length > 0) {
             var user = results[0];
@@ -92,7 +112,7 @@ app.post('/checkuser', (req, res) => {
           } else {
             console.log("Invalid username or password");
           }
-          res.send(200)
+          res.status(200)
           res.send(user)
     })
   })
