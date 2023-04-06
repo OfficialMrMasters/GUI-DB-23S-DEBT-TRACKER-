@@ -91,7 +91,7 @@ app.post('/signup', (req, res) => {
         user_id, username, first_name, last_name, age, admin, 
         nickname, password, phone_number, email 
         } = req.body
-    const query = `INSERT INTO users (user_id, username, first_name, last_name, age, admin, nickname, password, phone_number, email ) VALUES ('${user_id}','${username}','${first_name}', '${last_name}', ${age}, ${admin},'${nickname}', '${password}', '${phone_number}','${email}')`
+    const query = `INSERT INTO users (username, first_name, last_name, age, admin, nickname, password, phone_number, email ) VALUES ('${username}','${first_name}', '${last_name}', ${age}, ${admin},'${nickname}', '${password}', '${phone_number}','${email}')`
     connection.query(query, (err, rows, fields) => {
         if (err) throw err
 
@@ -101,7 +101,6 @@ app.post('/signup', (req, res) => {
     })
 })
 app.post('/checkuser', (req, res) => {
-    console.log("!!!!!!!!!");
     const { username, password } = req.body;
     connection.query('SELECT * FROM users WHERE username = ? AND password = ?', [username, password], (err, results) => {
         console.log(response);

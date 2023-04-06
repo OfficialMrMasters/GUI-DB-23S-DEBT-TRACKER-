@@ -66,7 +66,6 @@ function App() {
     event.preventDefault();
     axios.post(url + '/checkuser', { username, password }).then((res) => {
       console.log(res.data.first_name);
-      alert(res.data);
       //console.log(user);
       const user = res.data;
       setUsername(res.data.first_name);

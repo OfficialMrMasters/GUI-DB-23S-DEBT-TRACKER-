@@ -18,15 +18,13 @@ function SignUpForm() {
       setError('Passwords do not match.');
       return;
     }
-    var user_id = 3000;
     var admin = false;
     var age = 34;
     var nickname =[];
-    const userData = { first_name, last_name, email, password, phone_number, username, user_id,age,admin,nickname };
+    const userData = { first_name, last_name, email, password, phone_number, username,age,admin,nickname };
     axios.post(`${url}/signup`, userData)
       .then((response) => {
         console.log(response.data);
-        alert('Sign-up successful!');
         setFirstName('');
         setLastName('');
         setEmail('');
