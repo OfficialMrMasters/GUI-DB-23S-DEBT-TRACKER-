@@ -1,6 +1,6 @@
 import axios from "axios";
 
-function App() {
+function index() {
   const url = "http://localhost:8000";
 
   const checkAPI = () => {
@@ -79,4 +79,4 @@ function App() {
   );
 }
 
-export default App;
+export default index;

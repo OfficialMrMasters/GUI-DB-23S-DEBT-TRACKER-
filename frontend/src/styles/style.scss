@@ -1,52 +1,149 @@
+//Colors
+$primary: #8b0000;
+
+//Generic
+html,
+body,
+#root {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+}
+
+//Font
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+nav {
+  background-color: $primary;
+  color: white;
+  padding: 1em;
+  display: flex;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+  h1 {
+    margin: 0;
+    font-size: 2em;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  span {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    a {
+      text-decoration: none;
+      color: inherit;
+      font-size: 1.25em;
+      padding-left: 1em;
+      opacity: 1;
+    }
+    a:hover {
+      opacity: 0.5;
+      transition: 0.5s;
+    }
+  }
+  input {
+    height: 2em;
+    margin: 0;
+  }
+}
+
 .container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  .row {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    width: 100%;
+    border: 2px solid #666;
+    border-radius: 1em;
+    .column {
+      width: 50%;
+      padding: 1em;
+      &:first-child {
+        border-right: 2px solid #666;
+      }
+      .title {
+        text-align: center;
+        font-size: 2em;
+        h3 {
+          padding: 0;
+          margin: 0;
+        }
+      }
+      .img-wrapper {
+        width: 100%;
+        img {
+          width: 100%;
+        }
+      }
+      .name {
+        padding-top: 0.5em;
+        text-align: center;
+        font-size: 2em;
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+      .username,
+      .friends {
+        font-size: 1.125em;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+      }
+    }
+  }
 }
-  
+
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-  
+
 h1 {
-margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 label {
-    font-size: 18px;
-    margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 10px;
 }
 
 input {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    background-color: #f8f8f8;
-    font-size: 16px;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
 }
 
 button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
+  background-color: $primary;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 button:hover {
-    background-color: #45a049;
+  filter: brightness(80%);
+  transition: 0.5s;
 }
