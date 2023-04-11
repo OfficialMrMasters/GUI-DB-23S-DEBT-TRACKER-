@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getToken, getUser } from "../Utils/Common";
-import { NavLink, useLocation } from "react-router-dom";
+import { getUser } from "../Utils/Common";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [user, setUser] = useState(false);
 
   useEffect(() => {
@@ -22,6 +23,12 @@ export default function Nav() {
     };
   };
 
+  const handleSearch = () => {
+    navigate(`/search/${search.value}`);
+  };
+
+  const search = useInput("");
+
   return (
     <>
       {user ? (
@@ -30,7 +37,21 @@ export default function Nav() {
             <h1>DEBT TRACKER</h1>
           </NavLink>
           <span>
-            <input type="text" id="search" name="search" placeholder="search" />
+            <form onSubmit="event.preventDefault();">
+              <input
+                type="text"
+                id="search"
+                name="search"
+                placeholder="search"
+                {...search}
+              />
+              <button type="submit" onClick={handleSearch}>
+                <img
+                  src="https://www.kindacode.com/wp-content/uploads/2020/12/search.png"
+                  alt="button"
+                />
+              </button>
+            </form>
             <NavLink to={`/profile/${user.username}`}>Profile</NavLink>
             <NavLink to="/logout">Logout</NavLink>
           </span>

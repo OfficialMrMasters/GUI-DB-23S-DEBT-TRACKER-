@@ -12,6 +12,7 @@ import PublicRoute from "./Utils/PublicRoute";
 import { getToken } from "./Utils/Common";
 import Logout from "./pages/logout";
 import Profile from "./pages/profile";
+import Search from "./pages/search";
 
 export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -57,6 +58,9 @@ export default function App() {
         </Route>
         <Route path="/profile">
           <Route path=":username" element={<Profile />} />
+        </Route>
+        <Route path="/search">
+          <Route path=":username" element={<Search />} />
         </Route>
       </Routes>
     </BrowserRouter>
