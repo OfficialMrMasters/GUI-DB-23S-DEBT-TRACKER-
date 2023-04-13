@@ -3,9 +3,13 @@ import React from "react";
 export default function Homepage() {
   return (
     <>
-      <div className="container">
-        <h1 style={{ textAlign: "center" }}>Debt Tracker</h1>
-        <h2>This is literally just a wire transfer app.</h2>
+      <div className="container main">
+        <div className="text-wrapper">
+          <h1>I OWE YOU</h1>
+        </div>
+        <div className="text-wrapper">
+          <h2>An app made to help you track debt among friends</h2>
+        </div>
       </div>
     </>
   );

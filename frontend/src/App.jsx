@@ -23,16 +23,6 @@ export default function App() {
       return;
     }
     setAuthLoading(false);
-    // axios
-    //   .get(`http://localhost:4000/verifyToken?token=${token}`)
-    //   .then((response) => {
-    //     setUserSession(response.data.token, response.data.user);
-    //     setAuthLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     removeUserSession();
-    //     setAuthLoading(false);
-    //   });
   }, []);
 
   if (authLoading && getToken()) {
@@ -60,7 +50,7 @@ export default function App() {
           <Route path=":username" element={<Profile />} />
         </Route>
         <Route path="/search">
-          <Route path=":username" element={<Search />} />
+          <Route path=":search?" element={<Search />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,55 +1,52 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setUserSession } from "../../Utils/Common";
-import users from "../../axios/users.js";
+import usersAPI from "../../api/usersApi";
 
-export default function Login(props) {
-  const useFormInput = (initialValue) => {
-    const [value, setValue] = useState(initialValue);
-
-    const handleChange = (e) => {
-      setValue(e.target.value);
-    };
-    return {
-      value,
-      onChange: handleChange,
-    };
-  };
-  const navigate = useNavigate();
-  const username = useFormInput("");
-  const password = useFormInput("");
+export default function Login() {
+  const [data, setData] = useState({
+    username: "",
+    password: "",
+  });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setData({
+      ...data,
+      [e.target.name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setError(null);
     setLoading(true);
-    // axios.post('http://localhost:4000/users/signin', { username: username.value, password: password.value }).then(response => {
-    //   setLoading(false);
-    //   setUserSession(response.data.token, response.data.user);
-    //   props.history.push('/dashboard');
-    // }).catch(error => {
-    //   setLoading(false);
-    //   if (error.response.status === 401) setError(error.response.data.message);
-    //   else setError("Something went wrong. Please try again later.");
-    // });
-    let userFound = users.find(
-      (user) =>
-        user.username === username.value && user.password === password.value
-    );
-    if (userFound) {
-      setLoading(false);
-      setUserSession(true, userFound);
-      return navigate("/dashboard");
-    } else {
-      setLoading(false);
-      setError("Wrong username or password, please try again.");
-    }
+    usersAPI
+      .loginUser({
+        username: data.username,
+        password: data.password,
+      })
+      .then(function (response) {
+        setUserSession(true, response.data);
+        setLoading(false);
+        navigate("/dashboard");
+      })
+      .catch(function (error) {
+        setError(error.response.data);
+        setLoading(false);
+      });
   };
 
   return (
     <div className="container">
-      <form method="post">
+      <form
+        className="reglog"
+        style={{ maxWidth: "500px" }}
+        onSubmit={handleSubmit}
+      >
         <h1>Welcome</h1>
         <label htmlFor="username">Username</label>
         <input
@@ -57,7 +54,8 @@ export default function Login(props) {
           placeholder="Enter Username"
           name="username"
           required
-          {...username}
+          value={data.username}
+          onChange={handleChange}
         />
         <label htmlFor="password">Password</label>
         <input
@@ -65,7 +63,8 @@ export default function Login(props) {
           placeholder="Enter Password"
           name="password"
           required
-          {...password}
+          value={data.password}
+          onChange={handleChange}
         />
         {error && (
           <>
@@ -74,12 +73,9 @@ export default function Login(props) {
           </>
         )}
         <br />
-        <input
-          type="button"
-          value={loading ? "Loading..." : "Login"}
-          onClick={handleLogin}
-          disabled={loading}
-        />
+        <button type="submit" disabled={loading}>
+          {loading ? "Loading..." : "Login"}
+        </button>
       </form>
     </div>
   );
