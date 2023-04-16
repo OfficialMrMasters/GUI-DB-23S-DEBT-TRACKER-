@@ -193,6 +193,56 @@ app.post("/edit/:id", (req, res) => {
   });
 });
 
+app.post("/friend", (req, res) => {
+  const { user1_id, user2_id } = req.body;
+  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `INSERT INTO friends (user1_id, user2_id, date_added) VALUES (${user1_id}, ${user2_id}, '${date_added}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added friend relationship!");
+  });
+});
+
+app.get("/friends", (req, res) => {
+  const query = "SELECT * FROM friends";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/friend/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const { user1_id, user2_id } = req.body;
+  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE friends SET user1_id=${user1_id}, user2_id=${user2_id}, date_added='${date_added}' WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated friend relationship!");
+  });
+});
+
+app.delete("/friend/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const query = `DELETE FROM friends WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted friend relationship!");
+  });
+});
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
