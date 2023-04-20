@@ -216,6 +216,23 @@ app.get("/friends", (req, res) => {
   });
 });
 
+app.get("/friends/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const query = `SELECT * FROM friends WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    if (rows.length === 0) {
+      res.status(404);
+      res.send("Friend not found.");
+    } else {
+      res.status(200);
+      res.json(rows[0]);
+    }
+  });
+});
+
+
 app.put("/friend/:friend_id", (req, res) => {
   const { friend_id } = req.params;
   const { user1_id, user2_id } = req.body;
@@ -338,7 +355,76 @@ app.delete("/friend-request/:request_id", (req, res) => {
     res.status(200);
     res.send("Successfully deleted friend request!");
   });
+
 });
+
+app.post("/transaction", (req, res) => {
+  const { sender_id, receiver_id, amount } = req.body;
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const status = 'pending';
+  const query = `INSERT INTO transactions (sender_id, receiver_id, amount, date, status) VALUES (${sender_id}, ${receiver_id}, ${amount}, '${date}', '${status}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added transaction!");
+  });
+});
+
+app.get("/transactions", (req, res) => {
+  const query = "SELECT * FROM transactions";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/transaction/:transaction_id", (req, res) => {
+  const { transaction_id } = req.params;
+  const { sender_id, receiver_id, amount, status } = req.body;
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE transactions SET sender_id=${sender_id}, receiver_id=${receiver_id}, amount=${amount}, date='${date}', status='${status}' WHERE transaction_id=${transaction_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated transaction!");
+  });
+});
+
+app.get("/user/:user_id/transactions", (req, res) => {
+  const { user_id } = req.params;
+  const query = `SELECT * FROM transactions WHERE sender_id=${user_id} OR receiver_id=${user_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.get("/user/:user_id/transactions/:transaction_id", (req, res) => {
+  const { user_id, transaction_id } = req.params;
+  const query = `SELECT * FROM transactions WHERE (sender_id=${user_id} OR receiver_id=${user_id}) AND transaction_id=${transaction_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    if (rows.length === 0) {
+      res.status(404);
+      res.send("Transaction not found.");
+    } else {
+      res.status(200);
+      res.json(rows[0]);
+    }
+  });
+});
+
+
+
 
 
 // Start server
