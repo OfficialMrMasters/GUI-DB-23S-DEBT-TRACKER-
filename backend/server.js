@@ -183,8 +183,9 @@ app.post("/edit/:id", (req, res) => {
     password,
     phone_number,
     email,
+    setPrivate,
   } = req.body;
-  const query = `UPDATE users SET username = '${username}', first_name = '${first_name}', last_name = '${last_name}', age = '${age}', admin = '${admin}', nickname = '${nickname}', password = '${password}', phone_number = '${phone_number}', email =  '${email}' WHERE user_id = '${id}'`;
+  const query = `UPDATE users SET username = '${username}', first_name = '${first_name}', last_name = '${last_name}', age = '${age}', admin = '${admin}', nickname = '${nickname}', password = '${password}', phone_number = '${phone_number}', email =  '${email}', setPrivate = '${setPrivate}' WHERE user_id = '${id}'`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
 
@@ -194,9 +195,18 @@ app.post("/edit/:id", (req, res) => {
   });
 });
 
+app.delete("/delete/:id", (req, res) => {
+  var id = req.params.id;
+  connection.query("DELETE FROM users where user_id = ?", [id], (err) => {
+    if (err) throw err;
+    res.status(200);
+    res.send("Successfully cleared user!");
+  });
+});
+
 app.post("/friend", (req, res) => {
   const { user1_id, user2_id } = req.body;
-  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const date_added = new Date().toISOString().slice(0, 19).replace("T", " ");
   const query = `INSERT INTO friends (user1_id, user2_id, date_added) VALUES (${user1_id}, ${user2_id}, '${date_added}')`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
@@ -220,7 +230,7 @@ app.get("/friends", (req, res) => {
 app.put("/friend/:friend_id", (req, res) => {
   const { friend_id } = req.params;
   const { user1_id, user2_id } = req.body;
-  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const date_added = new Date().toISOString().slice(0, 19).replace("T", " ");
   const query = `UPDATE friends SET user1_id=${user1_id}, user2_id=${user2_id}, date_added='${date_added}' WHERE friend_id=${friend_id}`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
@@ -292,8 +302,8 @@ app.delete("/payment/:payment_id", (req, res) => {
 
 app.post("/friend-request", (req, res) => {
   const { sender_id, receiver_id } = req.body;
-  const request_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  const status = 'pending';
+  const request_date = new Date().toISOString().slice(0, 19).replace("T", " ");
+  const status = "pending";
   const query = `INSERT INTO friend_requests (sender_id, receiver_id, request_date, status) VALUES (${sender_id}, ${receiver_id}, '${request_date}', '${status}')`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
@@ -303,7 +313,6 @@ app.post("/friend-request", (req, res) => {
     res.send("Successfully added friend request!");
   });
 });
-
 
 app.get("/friend-requests", (req, res) => {
   const query = "SELECT * FROM friend_requests";
@@ -318,7 +327,7 @@ app.get("/friend-requests", (req, res) => {
 app.put("/friend-request/:request_id", (req, res) => {
   const { request_id } = req.params;
   const { sender_id, receiver_id, status } = req.body;
-  const request_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const request_date = new Date().toISOString().slice(0, 19).replace("T", " ");
   const query = `UPDATE friend_requests SET sender_id=${sender_id}, receiver_id=${receiver_id}, request_date='${request_date}', status='${status}' WHERE request_id=${request_id}`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
@@ -340,9 +349,6 @@ app.delete("/friend-request/:request_id", (req, res) => {
     res.send("Successfully deleted friend request!");
   });
 });
-
-
-
 
 // Start server
 app.listen(port, () => {

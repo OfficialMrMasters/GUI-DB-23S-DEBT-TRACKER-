@@ -8,6 +8,7 @@ export default function Private() {
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
   const [refresh, setRefresh] = useState(false);
+  const [logout, setLogout] = useState(false);
   const [data, setData] = useState({
     username: "",
     password: "",
@@ -18,10 +19,15 @@ export default function Private() {
     nickname: "",
     phone: "",
     email: "",
+    setPrivate: "",
   });
 
   const handleChange = (e) => {
-    const value = e.target.value;
+    var value = e.target.value;
+    if (e.target.name === "setPrivate") {
+      if (e.target.checked) value = 1;
+      else value = 0;
+    }
     setData({
       ...data,
       [e.target.name]: value,
@@ -40,6 +46,7 @@ export default function Private() {
       password: data.password,
       phone_number: data.phone,
       email: data.email,
+      setPrivate: data.setPrivate,
       admin: data.admin,
       setRefresh: setRefresh,
     });
@@ -53,12 +60,21 @@ export default function Private() {
       password: data.password,
       phone_number: data.phone,
       email: data.email,
+      setPrivate: data.setPrivate,
       admin: data.admin,
     });
   };
 
+  const handleDelete = (e) => {
+    e.preventDefault();
+    var d = window.confirm("Are you sure you want to delete your account?");
+    if (d)
+      usersAPI.deleteUser({ user_id: userInfo.user_id, setLogout: setLogout });
+  };
+
   useEffect(() => {
     if (refresh) navigate(`/profile/${getUser().username}`);
+    if (logout) navigate("/logout");
 
     usersAPI
       .getUser({ username })
@@ -74,12 +90,13 @@ export default function Private() {
           nickname: response.data.nickname,
           phone: response.data.phone_number,
           email: response.data.email,
+          setPrivate: response.data.setPrivate,
         });
       })
       .catch(function (error) {
         console.log(error);
       });
-  }, [username, navigate, refresh]);
+  }, [username, navigate, refresh, logout]);
 
   return (
     <div className="container">
@@ -210,8 +227,34 @@ export default function Private() {
                   />
                 </div>
               </div>
+              <div className="flex-inputs">
+                <div className="input-wrapper" style={{ display: "flex" }}>
+                  <label htmlFor="setPrivate">Set account private?</label>
+                  <input
+                    style={{ width: "auto", marginLeft: "auto" }}
+                    type="checkbox"
+                    name="setPrivate"
+                    placeholder=""
+                    checked={data.setPrivate}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="input-wrapper"></div>
+              </div>
               <button type="submit">Update</button>
             </form>
+            <div
+              className="button-wrapper"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <button
+                className="button-red"
+                onClick={handleDelete}
+                type="button"
+              >
+                Delete Account
+              </button>
+            </div>
           </div>
         </div>
       </div>
