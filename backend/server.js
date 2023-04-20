@@ -150,6 +150,7 @@ app.post("/login", (req, res) => {
 
 app.post("/getuser", (req, res) => {
   const { username } = req.body;
+  console.log(username);
   connection.query(
     "SELECT * FROM users WHERE username = ?",
     [username],
