@@ -194,6 +194,156 @@ app.post("/edit/:id", (req, res) => {
   });
 });
 
+app.post("/friend", (req, res) => {
+  const { user1_id, user2_id } = req.body;
+  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `INSERT INTO friends (user1_id, user2_id, date_added) VALUES (${user1_id}, ${user2_id}, '${date_added}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added friend relationship!");
+  });
+});
+
+app.get("/friends", (req, res) => {
+  const query = "SELECT * FROM friends";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/friend/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const { user1_id, user2_id } = req.body;
+  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE friends SET user1_id=${user1_id}, user2_id=${user2_id}, date_added='${date_added}' WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated friend relationship!");
+  });
+});
+
+app.delete("/friend/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const query = `DELETE FROM friends WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted friend relationship!");
+  });
+});
+
+app.post("/payment", (req, res) => {
+  const { payment_request_id, payment_date, amount } = req.body;
+  const query = `INSERT INTO payments (payment_request_id, payment_date, amount) VALUES (${payment_request_id}, '${payment_date}', ${amount})`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added payment!");
+  });
+});
+
+app.get("/payments", (req, res) => {
+  const query = "SELECT * FROM payments";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/payment/:payment_id", (req, res) => {
+  const { payment_id } = req.params;
+  const { payment_request_id, payment_date, amount } = req.body;
+  const query = `UPDATE payments SET payment_request_id=${payment_request_id}, payment_date='${payment_date}', amount=${amount} WHERE payment_id=${payment_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated payment!");
+  });
+});
+
+app.delete("/payment/:payment_id", (req, res) => {
+  const { payment_id } = req.params;
+  const query = `DELETE FROM payments WHERE payment_id=${payment_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted payment!");
+  });
+});
+
+app.post("/friend-request", (req, res) => {
+  const { sender_id, receiver_id } = req.body;
+  const request_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const status = 'pending';
+  const query = `INSERT INTO friend_requests (sender_id, receiver_id, request_date, status) VALUES (${sender_id}, ${receiver_id}, '${request_date}', '${status}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added friend request!");
+  });
+});
+
+
+app.get("/friend-requests", (req, res) => {
+  const query = "SELECT * FROM friend_requests";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/friend-request/:request_id", (req, res) => {
+  const { request_id } = req.params;
+  const { sender_id, receiver_id, status } = req.body;
+  const request_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE friend_requests SET sender_id=${sender_id}, receiver_id=${receiver_id}, request_date='${request_date}', status='${status}' WHERE request_id=${request_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated friend request!");
+  });
+});
+
+app.delete("/friend-request/:request_id", (req, res) => {
+  const { request_id } = req.params;
+  const query = `DELETE FROM friend_requests WHERE request_id=${request_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted friend request!");
+  });
+});
+
+
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
