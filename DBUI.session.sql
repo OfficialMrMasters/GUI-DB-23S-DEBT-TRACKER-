@@ -15,6 +15,41 @@ CREATE TABLE IF NOT EXISTS users (
   PRIMARY KEY (user_id),
   UNIQUE (username)
 );
+
+CREATE TABLE IF NOT EXISTS friends (
+  friend_id INT NOT NULL AUTO_INCREMENT,
+  user1_id INT NOT NULL,
+  user2_id INT NOT NULL,
+  date_added DATETIME NOT NULL,
+  PRIMARY KEY (friend_id),
+  UNIQUE KEY (user1_id, user2_id),
+  FOREIGN KEY (user1_id) REFERENCES users(user_id),
+  FOREIGN KEY (user2_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  transaction_id INT NOT NULL AUTO_INCREMENT,
+  sender_id INT NOT NULL,
+  receiver_id INT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  date DATETIME NOT NULL,
+  status ENUM('pending', 'completed', 'failed') NOT NULL,
+  PRIMARY KEY (transaction_id),
+  FOREIGN KEY (sender_id) REFERENCES users(user_id),
+  FOREIGN KEY (receiver_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE payments (
+  payment_id INT NOT NULL AUTO_INCREMENT,
+  payment_request_id INT NOT NULL,
+  payment_date DATE NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (payment_id),
+  FOREIGN KEY (payment_request_id) REFERENCES payment_requests(payment_request_id)
+);
+
+
+
 INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('uKpKfLzFEQ', 'EUVFuDfRZG', 'ibRXdsdnrm', 'nobZoUauVQ', 36, 0, 'qLTMt', '9153190075', 'xwidXzSbfG@example.com');
 INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('FtFzchGhPB', 'iKEij5YwcC', 'EbpfwOkqsM', 'WynraTDIGP', 63, 1, 'XhgzF', '5513469079', 'hvYeVRGQhr@example.com');
 INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('WeoRAohHwH', 'QyLNf0Zzu5', 'XIeelSUWGS', 'ufOKpRRDIy', 64, 0, 'cxtiv', '6594824546', 'YSCNjtYsyj@example.com');

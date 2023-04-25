@@ -225,23 +225,241 @@ app.get("/expected_payment", (req,res) => {
     res.send(rows);
   });
 
+
+app.post("/friend", (req, res) => {
+  const { user1_id, user2_id } = req.body;
+  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `INSERT INTO friends (user1_id, user2_id, date_added) VALUES (${user1_id}, ${user2_id}, '${date_added}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added friend relationship!");
+  });
 });
-//add an expected payment
-app.post("/add_expected_payment/", (req, res) => {
-        const {
-          expected_payment_id,
-          lender_id,
-          debtor_id,
-          payment_deadline,
-          payment_amount,
-      } = req.body;
-      const query = `INSERT INTO expected_payments (expected_payment_id, lender_id, debtor_id, payment_deadline, payment_amount) VALUES ('${expected_payment_id}','${lender_id}','${debtor_id}','${payment_deadline}','${payment_amount}')`;
-      connection.query(query, (err, rows, fields) => {
-        if (err) throw err;
-        res.status(200);
-        res.send("Successfully added expected payment!");
-      });
+
+app.get("/friends", (req, res) => {
+  const query = "SELECT * FROM friends";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
 });
+
+app.get("/friends/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const query = `SELECT * FROM friends WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    if (rows.length === 0) {
+      res.status(404);
+      res.send("Friend not found.");
+    } else {
+      res.status(200);
+      res.json(rows[0]);
+    }
+  });
+});
+
+
+app.put("/friend/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const { user1_id, user2_id } = req.body;
+  const date_added = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE friends SET user1_id=${user1_id}, user2_id=${user2_id}, date_added='${date_added}' WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated friend relationship!");
+  });
+});
+
+app.delete("/friend/:friend_id", (req, res) => {
+  const { friend_id } = req.params;
+  const query = `DELETE FROM friends WHERE friend_id=${friend_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted friend relationship!");
+  });
+});
+
+app.post("/payment", (req, res) => {
+  const { payment_request_id, payment_date, amount } = req.body;
+  const query = `INSERT INTO payments (payment_request_id, payment_date, amount) VALUES (${payment_request_id}, '${payment_date}', ${amount})`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added payment!");
+  });
+});
+
+app.get("/payments", (req, res) => {
+  const query = "SELECT * FROM payments";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/payment/:payment_id", (req, res) => {
+  const { payment_id } = req.params;
+  const { payment_request_id, payment_date, amount } = req.body;
+  const query = `UPDATE payments SET payment_request_id=${payment_request_id}, payment_date='${payment_date}', amount=${amount} WHERE payment_id=${payment_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated payment!");
+  });
+});
+
+app.delete("/payment/:payment_id", (req, res) => {
+  const { payment_id } = req.params;
+  const query = `DELETE FROM payments WHERE payment_id=${payment_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted payment!");
+  });
+});
+
+app.post("/friend-request", (req, res) => {
+  const { sender_id, receiver_id } = req.body;
+  const request_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const status = 'pending';
+  const query = `INSERT INTO friend_requests (sender_id, receiver_id, request_date, status) VALUES (${sender_id}, ${receiver_id}, '${request_date}', '${status}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added friend request!");
+  });
+});
+
+
+app.get("/friend-requests", (req, res) => {
+  const query = "SELECT * FROM friend_requests";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/friend-request/:request_id", (req, res) => {
+  const { request_id } = req.params;
+  const { sender_id, receiver_id, status } = req.body;
+  const request_date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE friend_requests SET sender_id=${sender_id}, receiver_id=${receiver_id}, request_date='${request_date}', status='${status}' WHERE request_id=${request_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated friend request!");
+  });
+});
+
+app.delete("/friend-request/:request_id", (req, res) => {
+  const { request_id } = req.params;
+  const query = `DELETE FROM friend_requests WHERE request_id=${request_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully deleted friend request!");
+  });
+
+});
+
+app.post("/transaction", (req, res) => {
+  const { sender_id, receiver_id, amount } = req.body;
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const status = 'pending';
+  const query = `INSERT INTO transactions (sender_id, receiver_id, amount, date, status) VALUES (${sender_id}, ${receiver_id}, ${amount}, '${date}', '${status}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully added transaction!");
+  });
+});
+
+app.get("/transactions", (req, res) => {
+  const query = "SELECT * FROM transactions";
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.put("/transaction/:transaction_id", (req, res) => {
+  const { transaction_id } = req.params;
+  const { sender_id, receiver_id, amount, status } = req.body;
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `UPDATE transactions SET sender_id=${sender_id}, receiver_id=${receiver_id}, amount=${amount}, date='${date}', status='${status}' WHERE transaction_id=${transaction_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    console.log(rows);
+    res.status(200);
+    res.send("Successfully updated transaction!");
+  });
+});
+
+app.get("/user/:user_id/transactions", (req, res) => {
+  const { user_id } = req.params;
+  const query = `SELECT * FROM transactions WHERE sender_id=${user_id} OR receiver_id=${user_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.json(rows);
+  });
+});
+
+app.get("/user/:user_id/transactions/:transaction_id", (req, res) => {
+  const { user_id, transaction_id } = req.params;
+  const query = `SELECT * FROM transactions WHERE (sender_id=${user_id} OR receiver_id=${user_id}) AND transaction_id=${transaction_id}`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+
+    if (rows.length === 0) {
+      res.status(404);
+      res.send("Transaction not found.");
+    } else {
+      res.status(200);
+      res.json(rows[0]);
+    }
+  });
+});
+
+
+
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
