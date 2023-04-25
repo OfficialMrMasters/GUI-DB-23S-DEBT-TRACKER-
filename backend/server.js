@@ -15,7 +15,7 @@ const { response } = require("express");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Clo53971313$",
+  password: "",
   database: "DBUI",
 });
 
@@ -192,6 +192,39 @@ app.post("/edit/:id", (req, res) => {
     res.send("Successfully updated user!");
   });
 });
+//get all expected payments
+app.get("/expected_payments", (req,res) => {
+    const {
+    } = req.body;
+    connection.query(`SELECT * FROM expected_payments`, (err, rows, fields) => {
+      if (err) throw err;
+  
+      res.status(200);
+      res.send(rows);
+    });
+
+});
+//get specific expected payment with expected_payment_id as key
+app.get("/expected_payment", (req,res) => {
+  const {
+      expected_payment_id,
+  } = req.body;
+  connection.query(`SELECT * FROM expected_payments WHERE expected_payment_id = ?`, 
+  [expected_payment_id],
+  (err, results, fields) => {
+    if (err) throw err;
+    if (results.length > 0) {
+      var payment = results[0];
+      res.status(200);
+      res.send(payment);
+    } else {
+      res.status(401);
+      res.send("Payment not found");
+    }
+    res.status(200);
+    res.send(rows);
+  });
+
 
 app.post("/friend", (req, res) => {
   const { user1_id, user2_id } = req.body;
