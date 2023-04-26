@@ -15,7 +15,7 @@ const { response } = require("express");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "raferafe",
   database: "DBUI",
 });
 
@@ -360,6 +360,56 @@ app.post("/blocked_user/:user_id", (req,res) => {
       res.send("Successfully updated blocked user!");
     });
 });
+app.get("/timeline", (req, res) => {
+  connection.query(`SELECT * FROM timeline`, (err, rows, fields) => {
+    if (err) throw err;
+
+    res.status(200);
+    res.send(rows);
+  });
+});
+app.get("/timeline/:timeline_id"), (req, res) => {
+  const {
+    timeline_id,
+} = req.body;
+
+  connection.query(`SELECT * FROM timeline WHERE timeline_id = ?`,
+  [timeline_id],
+  (err, results, fields) => {
+    if (err) throw err;
+    if (results.length > 0) {
+      var time = results[0];
+      res.status(200);
+      res.send(time);
+    } else {
+      res.status(401);
+      res.send("Timeline not found");
+    }
+    res.status(200);
+    res.send(rows);
+  });
+};
+app.post("/add_timeline", (req,res) => {
+  const {
+    timeline_id,
+    lender_id,
+    debtor_id,
+    payment_amount,
+    payment_notes,
+
+  } = req.body;
+  const date = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const query = `INSERT INTO timeline (timeline_id,lender_id,debtor_id,date,payment_amounts,payment_notes) VALUES ('${timeline_id}','${lender_id}', '${debtor_id}', '${date}','${payment_amount}','${payment_notes}')`;
+  connection.query(query, (err, rows, fields) => {
+    if (err) throw err;
+    res.status(200);
+    res.send("Successfully added timeline!");
+  });
+
+});
+
+
+
 // Start server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
