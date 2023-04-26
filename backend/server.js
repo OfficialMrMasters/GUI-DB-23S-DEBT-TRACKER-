@@ -12,10 +12,11 @@ app.use(express.json());
 // Connect to mysql
 const mysql = require("mysql");
 const { response } = require("express");
+const env = require("dotenv").config();
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: `${env.parsed.DB_PASSWORD}`,
   database: "DBUI",
 });
 
@@ -195,38 +196,36 @@ app.post("/edit/:id", (req, res) => {
   });
 });
 //get all expected payments
-app.get("/expected_payments", (req,res) => {
-    const {
-    } = req.body;
-    connection.query(`SELECT * FROM expected_payments`, (err, rows, fields) => {
-      if (err) throw err;
-  
-      res.status(200);
-      res.send(rows);
-    });
-
-});
-//get specific expected payment with expected_payment_id as key
-app.get("/expected_payment", (req,res) => {
-  const {
-      expected_payment_id,
-  } = req.body;
-  connection.query(`SELECT * FROM expected_payments WHERE expected_payment_id = ?`, 
-  [expected_payment_id],
-  (err, results, fields) => {
+app.get("/expected_payments", (req, res) => {
+  const {} = req.body;
+  connection.query(`SELECT * FROM expected_payments`, (err, rows, fields) => {
     if (err) throw err;
-    if (results.length > 0) {
-      var payment = results[0];
-      res.status(200);
-      res.send(payment);
-    } else {
-      res.status(401);
-      res.send("Payment not found");
-    }
+
     res.status(200);
     res.send(rows);
   });
-
+});
+//get specific expected payment with expected_payment_id as key
+app.get("/expected_payment", (req, res) => {
+  const { expected_payment_id } = req.body;
+  connection.query(
+    `SELECT * FROM expected_payments WHERE expected_payment_id = ?`,
+    [expected_payment_id],
+    (err, results, fields) => {
+      if (err) throw err;
+      if (results.length > 0) {
+        var payment = results[0];
+        res.status(200);
+        res.send(payment);
+      } else {
+        res.status(401);
+        res.send("Payment not found");
+      }
+      res.status(200);
+      res.send(rows);
+    }
+  );
+});
 
 app.delete("/delete/:id", (req, res) => {
   var id = req.params.id;
