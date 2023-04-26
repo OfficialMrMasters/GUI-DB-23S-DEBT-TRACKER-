@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { friendsAPI } from "../../api";
 import { getUser } from "../../Utils/Common";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [friends, setFriends] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     friendsAPI.getFriend({ user_id: getUser().user_id }).then((res) => {
       setFriends(res.data);
@@ -48,8 +50,32 @@ export default function Dashboard() {
                         </div>
                       </div>
                       <div className="buttons-wrapper">
-                        <button className="button">Borrow</button>
-                        <button className="button">Provide</button>
+                        <button
+                          className="button"
+                          onClick={() => {
+                            navigate("/borrow", {
+                              state: {
+                                user_id: getUser().user_id,
+                                friend_id: friend.user_id,
+                              },
+                            });
+                          }}
+                        >
+                          Borrow
+                        </button>
+                        <button
+                          className="button"
+                          onClick={() => {
+                            navigate("/provide", {
+                              state: {
+                                user_id: getUser().user_id,
+                                friend_id: friend.user_id,
+                              },
+                            });
+                          }}
+                        >
+                          Provide
+                        </button>
                       </div>
                     </div>
                   </li>

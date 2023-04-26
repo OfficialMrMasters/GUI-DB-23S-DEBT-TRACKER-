@@ -133,7 +133,6 @@ app.post("/login", (req, res) => {
     "SELECT * FROM users WHERE username = ? AND password = ?",
     [username, password],
     (err, results) => {
-      console.log(results);
       if (results.length > 0) {
         var user = results[0];
         console.log(user);
@@ -151,16 +150,12 @@ app.post("/login", (req, res) => {
 
 app.post("/getuser", (req, res) => {
   const { username } = req.body;
-  console.log(username);
   connection.query(
     "SELECT * FROM users WHERE username = ?",
     [username],
     (err, results) => {
-      console.log(results);
       if (results.length > 0) {
         var user = results[0];
-        console.log(user);
-        console.log("Returning user:", user.first_name);
         res.status(200);
         res.send(user);
       } else {
@@ -249,12 +244,13 @@ app.post("/friend", (req, res) => {
   });
 });
 
-app.post("/friends", (req, res) => {
-  const { user_id } = req.body;
+app.get("/friends/:user_id", (req, res) => {
+  const { user_id } = req.params;
   // const query = `SELECT users_friends.* FROM users users_friends INNER JOIN (SELECT user1_id AS user_id FROM friends WHERE user2_id = ${user_id} UNION ALL SELECT user2_id AS user_id FROM friends WHERE user1_id = ${user_id}) AS friends_found ON users_friends.user_id = friends_found.user_id`;
   const query = `SELECT u.*, 
   COALESCE(SUM(CASE WHEN t.receiver_id = connections.user_id THEN t.amount ELSE 0 END), 0) AS amount_owed,
-  COALESCE(SUM(CASE WHEN t.sender_id = connections.user_id THEN t.amount ELSE 0 END), 0) AS amount_borrowed
+  COALESCE(SUM(CASE WHEN t.sender_id = connections.user_id THEN t.amount ELSE 0 END), 0) AS amount_borrowed,
+  f.friend_id
 FROM users u
 INNER JOIN (
   SELECT user1_id AS user_id FROM friends WHERE user2_id = ${user_id}
@@ -263,7 +259,9 @@ INNER JOIN (
 ) AS connections
 ON u.user_id = connections.user_id
 LEFT JOIN transactions t ON (t.receiver_id = connections.user_id OR t.sender_id = connections.user_id)
-GROUP BY u.user_id`;
+LEFT JOIN friends f ON (u.user_id = f.user1_id OR u.user_id = f.user2_id) AND (f.user1_id = ${user_id} OR f.user2_id = ${user_id})
+GROUP BY u.user_id, f.friend_id;
+`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
 

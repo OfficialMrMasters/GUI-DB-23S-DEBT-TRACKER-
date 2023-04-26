@@ -1,5 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import usersAPI from "../../api/usersApi";
+import { friendsAPI } from "../../api";
 import { useEffect, useState } from "react";
 import { setUserSession, getUser } from "../../Utils/Common";
 
@@ -21,6 +22,7 @@ export default function Private() {
     email: "",
     setPrivate: "",
   });
+  const [friends, setFriends] = useState([]);
 
   const handleChange = (e) => {
     var value = e.target.value;
@@ -96,6 +98,9 @@ export default function Private() {
       .catch(function (error) {
         console.log(error);
       });
+    friendsAPI.getFriend({ user_id: getUser().user_id }).then((res) => {
+      setFriends(res.data);
+    });
   }, [username, navigate, refresh, logout]);
 
   return (
@@ -119,7 +124,49 @@ export default function Private() {
             <div className="friends">
               <span className="title">Friends: </span>
               <ul>
-                <li>You have no friends {":("}</li>
+                {friends.map((friend) => {
+                  return (
+                    <li
+                      key={friend.user_id}
+                      style={{
+                        listStyleType: "none",
+                        padding: "1em",
+                        display: "flex",
+                      }}
+                    >
+                      <div style={{ width: "100px", padding: "1em" }}>
+                        <img
+                          src="https://www.pngarts.com/files/10/Default-Profile-Picture-Transparent-Image.png"
+                          alt="friend"
+                          style={{ width: "100%" }}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <span style={{ fontWeight: 500 }}>
+                          {friend.first_name + " " + friend.last_name}
+                        </span>
+                        <button
+                          className="button-red"
+                          style={{ width: "fit-content" }}
+                          onClick={() => {
+                            friendsAPI.removeFriend({
+                              friend_id: friend.friend_id,
+                            });
+                            navigate(0);
+                          }}
+                        >
+                          Remove Friend
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
