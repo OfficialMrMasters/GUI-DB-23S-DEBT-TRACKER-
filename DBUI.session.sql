@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS friends (
   FOREIGN KEY (user2_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
   transaction_id INT NOT NULL AUTO_INCREMENT,
   sender_id INT NOT NULL,
   receiver_id INT NOT NULL,
@@ -39,6 +39,16 @@ CREATE TABLE transactions (
   FOREIGN KEY (sender_id) REFERENCES users(user_id),
   FOREIGN KEY (receiver_id) REFERENCES users(user_id)
 );
+
+CREATE TABLE payments (
+  payment_id INT NOT NULL AUTO_INCREMENT,
+  payment_request_id INT NOT NULL,
+  payment_date DATE NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (payment_id),
+  FOREIGN KEY (payment_request_id) REFERENCES payment_requests(payment_request_id)
+);
+
 
 
 INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('FtFzchGhPB', 'iKEij5YwcC', 'EbpfwOkqsM', 'WynraTDIGP', 63, 1, 'XhgzF', '5513469079', 'hvYeVRGQhr@example.com', 0);
