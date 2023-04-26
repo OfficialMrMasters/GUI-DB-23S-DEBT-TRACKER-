@@ -249,9 +249,9 @@ app.post("/friend", (req, res) => {
   });
 });
 
-app.get("/friends", (req, res) => {
-  const { user_id } = req.params;
-  const query = `SELECT * FROM friends WHERE user1_id = ${user_id} XOR user2_id = ${user_id}`;
+app.post("/friends", (req, res) => {
+  const { user_id } = req.body;
+  const query = `SELECT users_friends.* FROM users users_friends INNER JOIN (SELECT user1_id AS user_id FROM friends WHERE user2_id = ${user_id} UNION ALL SELECT user2_id AS user_id FROM friends WHERE user1_id = ${user_id}) AS friends_found ON users_friends.user_id = friends_found.user_id`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
 

@@ -81,10 +81,11 @@ nav {
 }
 
 .container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  margin-left: auto;
+  margin-top: 5em;
+  margin-bottom: 5em;
+  margin-right: auto;
   width: 75%;
   .row {
     display: flex;
