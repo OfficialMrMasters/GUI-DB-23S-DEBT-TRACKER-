@@ -122,6 +122,7 @@ const updateUser = ({
   email,
   admin,
   setRefresh,
+  setPrivate,
 }) => {
   axios
     .post(`${url}/edit/${id}`, {
@@ -134,10 +135,25 @@ const updateUser = ({
       password: password,
       phone_number: phone_number,
       email: email,
+      setPrivate: setPrivate,
       admin: admin,
     })
     .then(function (response) {
       setRefresh(true);
+      alert(response.data);
+    })
+    .catch(function (error) {
+      alert(error);
+      console.log(error);
+    });
+};
+
+const deleteUser = ({ user_id, setLogout }) => {
+  console.log(user_id);
+  axios
+    .delete(`${url}/delete/${user_id}`)
+    .then(function (response) {
+      setLogout(true);
       alert(response.data);
     })
     .catch(function (error) {
@@ -156,6 +172,7 @@ const usersAPI = {
   loginUser,
   getUser,
   updateUser,
+  deleteUser,
 };
 
 export default usersAPI;

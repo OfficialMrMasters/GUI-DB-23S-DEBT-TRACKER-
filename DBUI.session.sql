@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
   password VARCHAR(255) NOT NULL,
   phone_number VARCHAR(10),
   email  VARCHAR(255),
+  setPrivate  BOOLEAN NULL DEFAULT FALSE,
   PRIMARY KEY (user_id),
   UNIQUE (username)
 );
@@ -39,25 +40,27 @@ CREATE TABLE IF NOT EXISTS transactions (
   FOREIGN KEY (receiver_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE payments (
+CREATE TABLE IF NOT EXISTS payments (
   payment_id INT NOT NULL AUTO_INCREMENT,
   payment_request_id INT NOT NULL,
   payment_date DATE NOT NULL,
   amount DECIMAL(10,2) NOT NULL,
   PRIMARY KEY (payment_id),
-  FOREIGN KEY (payment_request_id) REFERENCES payment_requests(payment_request_id)
+  FOREIGN KEY (payment_request_id) REFERENCES transactions(transaction_id)
 );
 
 
 
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('uKpKfLzFEQ', 'EUVFuDfRZG', 'ibRXdsdnrm', 'nobZoUauVQ', 36, 0, 'qLTMt', '9153190075', 'xwidXzSbfG@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('FtFzchGhPB', 'iKEij5YwcC', 'EbpfwOkqsM', 'WynraTDIGP', 63, 1, 'XhgzF', '5513469079', 'hvYeVRGQhr@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('WeoRAohHwH', 'QyLNf0Zzu5', 'XIeelSUWGS', 'ufOKpRRDIy', 64, 0, 'cxtiv', '6594824546', 'YSCNjtYsyj@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('uoWaODdpbE', 'FL9IaxYdnQ', 'BvuLqSaWsp', 'JhCBONYygr', 36, 0, 'yEbHC', '2326719532', 'DSrVGzdkPt@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('XQdqxhMzZZ', 'bnAMzXP9m7', 'KzOsbkWXBx', 'lkeDQjrqdb', 51, 0, 'BEHaH', '9662710697', 'gwHkfrVlEd@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('TuqmKjWwcc', '36VaWsVYKi', 'bZqOUGCMyQ', 'sABqoNjrUc', 40, 0, 'EsusA', '6585341734', 'lpAOWuFUXm@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('pqNplSgBeI', '5krS0uPpFj', 'TjxILSEyoG', 'DCHguxGtBc', 43, 1, 'wqMtC', '5271953086', 'JEAxcXNSmQ@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('zUErPrZCiG', 'tWNgOcChcv', 'ddcrxDGPJi', 'BVdRrymojG', 46, 0, 'zIxCo', '0706041981', 'WeOZaYyWoy@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('ULZLlBfubt', '0PMaI22Rj2', 'BvOqTriaQD', 'jAOJCNUqqd', 28, 0, 'XBTIs', '3615169300', 'HYQAzpDpHJ@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('WQJECowpbf', 'CQZ2qcmF1u', 'LktYydkTBA', 'FSCsjFxhpB', 48, 1, 'IXlTH', '8995759790', 'wwalHKQELw@example.com');
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email) VALUES ('UNmMFqxuIA', '01k58rD7j1', 'qEWwxMYGbv', 'FunUqrTApa', 36, 1, 'Uycxq', '8827810981', 'XTewabDQoR@example.com');
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('admin', 'password', 'Admin', 'Admin', 21, 1, 'Admin', '0000000000', 'admin@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('cirenio', 'cirenio', 'Cirenio', 'Lopez', 21, 0, 'Cirenio', '2142906697', 'cblopez@smu.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('ford', 'ford', 'Ford', 'Jackson', 21, 0, 'Ford', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('kevin', 'kevin', 'Kevin', 'Jarquin', 21, 0, 'Kevin', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('rafe', 'rafe', 'Rafe', 'Forward', 21, 0, 'Rafe', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('ridhi', 'ridhi', 'Ridhi', 'Ralli', 21, 0, 'Ridhi', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('simba', 'simba', 'Simba', 'Masters', 21, 0, 'Simba', '0000000000', 'example@example.com', 0);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 1, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 3, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 4, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 5, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 6, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 7, CURRENT_TIMESTAMP);
