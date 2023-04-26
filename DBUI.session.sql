@@ -52,5 +52,15 @@ CREATE TABLE IF NOT EXISTS payments (
 
 
 INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('admin', 'password', 'Admin', 'Admin', 21, 1, 'Admin', '0000000000', 'admin@example.com', 0);
-INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('cirenio', 'cirenio', 'Cirenio', 'Lopez', 21, 0, 'XhgzF', '2142906697', 'cblopez@smu.com', 0);
-
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('cirenio', 'cirenio', 'Cirenio', 'Lopez', 21, 0, 'Cirenio', '2142906697', 'cblopez@smu.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('ford', 'ford', 'Ford', 'Jackson', 21, 0, 'Ford', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('kevin', 'kevin', 'Kevin', 'Jarquin', 21, 0, 'Kevin', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('rafe', 'rafe', 'Rafe', 'Forward', 21, 0, 'Rafe', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('ridhi', 'ridhi', 'Ridhi', 'Ralli', 21, 0, 'Ridhi', '0000000000', 'example@example.com', 0);
+INSERT INTO users (username, password, first_name, last_name, age, admin, nickname, phone_number, email, setPrivate) VALUES ('simba', 'simba', 'Simba', 'Masters', 21, 0, 'Simba', '0000000000', 'example@example.com', 0);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 1, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 3, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 4, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 5, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 6, CURRENT_TIMESTAMP);
+INSERT INTO friends (user1_id, user2_id, date_added) VALUES (2, 7, CURRENT_TIMESTAMP);

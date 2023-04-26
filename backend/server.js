@@ -250,7 +250,8 @@ app.post("/friend", (req, res) => {
 });
 
 app.get("/friends", (req, res) => {
-  const query = "SELECT * FROM friends";
+  const { user_id } = req.params;
+  const query = `SELECT * FROM friends WHERE user1_id = ${user_id} XOR user2_id = ${user_id}`;
   connection.query(query, (err, rows, fields) => {
     if (err) throw err;
 
