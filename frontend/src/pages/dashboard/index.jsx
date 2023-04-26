@@ -20,7 +20,7 @@ export default function Dashboard() {
             <ul>
               {friends.map((friend) => {
                 return (
-                  <li>
+                  <li key={friend.user_id}>
                     <div className="friend-wrapper">
                       <div className="img-wrapper">
                         <img
@@ -34,10 +34,16 @@ export default function Dashboard() {
                         </div>
                         <div className="flex">
                           <div className="borrow-owe">
-                            Borrowed: <span className="amount">$0</span>
+                            Borrowed:{" "}
+                            <span className="amount">
+                              ${friend.amount_borrowed}
+                            </span>
                           </div>
                           <div className="borrow-owe">
-                            Owed: <span className="amount">$0</span>
+                            Owed:{" "}
+                            <span className="amount">
+                              ${friend.amount_owed}
+                            </span>
                           </div>
                         </div>
                       </div>
