@@ -42,7 +42,7 @@ export default function Dashboard() {
                             </span>
                           </div>
                           <div className="borrow-owe">
-                            Owed:{" "}
+                            Lent:{" "}
                             <span className="amount">
                               ${friend.amount_borrowed}
                             </span>
@@ -76,7 +76,7 @@ export default function Dashboard() {
                             });
                           }}
                         >
-                          Provide
+                          Lend
                         </button>
                       </div>
                     </div>

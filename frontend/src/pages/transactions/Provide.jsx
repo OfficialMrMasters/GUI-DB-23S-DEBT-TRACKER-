@@ -49,12 +49,12 @@ function Provide() {
       <div className="row col-single">
         <div className="column col-full">
           <div>
-            <h2>Provide to: {friend.first_name}</h2>
+            <h2>Lend to: {friend.first_name}</h2>
           </div>
           <div>
             <span>
               <h3>
-                Amount to provide:{" $"}
+                Total amount lent:{" $"}
                 {transactions.length === 0
                   ? "0"
                   : transactions.reduce((accum, transaction) => {
@@ -66,7 +66,7 @@ function Provide() {
           <div>
             <form style={{ display: "flex", flexDirection: "column" }}>
               <div>
-                <label htmlFor="amount">Provide: $</label>
+                <label htmlFor="amount">Lend: $</label>
                 <input
                   placeholder="0"
                   name="amount"
