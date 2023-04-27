@@ -38,13 +38,13 @@ export default function Dashboard() {
                           <div className="borrow-owe">
                             Borrowed:{" "}
                             <span className="amount">
-                              ${friend.amount_borrowed}
+                              ${friend.amount_owed}
                             </span>
                           </div>
                           <div className="borrow-owe">
                             Owed:{" "}
                             <span className="amount">
-                              ${friend.amount_owed}
+                              ${friend.amount_borrowed}
                             </span>
                           </div>
                         </div>
@@ -57,6 +57,7 @@ export default function Dashboard() {
                               state: {
                                 user_id: getUser().user_id,
                                 friend_id: friend.user_id,
+                                friend_username: friend.username,
                               },
                             });
                           }}
@@ -68,8 +69,9 @@ export default function Dashboard() {
                           onClick={() => {
                             navigate("/provide", {
                               state: {
-                                user_id: getUser().user_id,
-                                friend_id: friend.user_id,
+                                user_id: friend.user_id,
+                                friend_id: getUser().user_id,
+                                friend_username: friend.username,
                               },
                             });
                           }}
