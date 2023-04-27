@@ -13,6 +13,8 @@ import { getToken } from "./Utils/Common";
 import Logout from "./pages/logout";
 import Profile from "./pages/profile";
 import Search from "./pages/search";
+import Borrow from "./pages/transactions/Borrow";
+import Provide from "./pages/transactions/Provide";
 
 export default function App() {
   const [authLoading, setAuthLoading] = useState(true);
@@ -42,6 +44,12 @@ export default function App() {
         </Route>
         <Route path="/dashboard" element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+        <Route path="/borrow" element={<PrivateRoute />}>
+          <Route path="/borrow" element={<Borrow />} />
+        </Route>
+        <Route path="/provide" element={<PrivateRoute />}>
+          <Route path="/provide" element={<Provide />} />
         </Route>
         <Route path="/logout" element={<PrivateRoute />}>
           <Route path="/logout" element={<Logout />} />

@@ -81,10 +81,11 @@ nav {
 }
 
 .container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  margin-left: auto;
+  margin-top: 5em;
+  margin-bottom: 5em;
+  margin-right: auto;
   width: 75%;
   .row {
     display: flex;
@@ -322,6 +323,108 @@ nav {
             }
           }
         }
+      }
+    }
+  }
+}
+
+.button-red {
+  background-color: $primary;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 1s;
+  &:hover {
+    filter: brightness(75%);
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .main {
+    display: flex;
+    flex-direction: column;
+
+    h1,
+    h2,
+    h3 {
+      margin: auto;
+    }
+    .text-wrapper {
+      margin: auto;
+      overflow: hidden;
+      padding: 1em;
+      text-align: center;
+    }
+    h1 {
+      font-size: 4em;
+      animation: move 2s normal;
+    }
+    h2 {
+      font-size: 2em;
+      animation: move 2s normal;
+    }
+  }
+  .container {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    .row {
+      flex-direction: column;
+      .column {
+        width: auto;
+        &:first-child {
+          border-right: none;
+          .content {
+            ul {
+              li {
+                .friend-wrapper {
+                  flex-wrap: wrap;
+                  justify-content: center;
+                  .info {
+                    margin-left: 0;
+                  }
+                  .buttons-wrapper {
+                    width: 100%;
+                    justify-content: center;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .reglog,
+  .gen-form {
+    padding: 10px;
+
+    .flex-inputs {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .input-wrapper {
+        width: auto;
+      }
+    }
+  }
+
+  nav {
+    h1 {
+      font-size: 1.5em;
+    }
+    form {
+      input {
+        width: 2em;
       }
     }
   }
